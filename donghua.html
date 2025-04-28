@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: #f0f2f5;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .smiley {
+            font-size: 80px;
+            margin-bottom: 30px;
+            animation: bounce 1.2s infinite;
+        }
+
+        .question {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .buttons {
+            position: relative;
+            height: 120px;
+            width: 300px;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: absolute;
+        }
+
+        #yesBtn {
+            background: #4CAF50;
+            color: white;
+            left: 0;
+        }
+
+        #noBtn {
+            background: #f44336;
+            color: white;
+            right: 0;
+        }
+
+        /* 新增提示框样式 */
+    .dialog-box {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.2);
+        text-align: center;
+        display: none;
+        z-index: 100;
+        animation: zoomIn 0.3s;
+    }
+
+    .dialog-img {
+        width: 150px;
+        height: 150px;
+        margin-bottom: 20px;
+    }
+
+    .dialog-text {
+        font-size: 20px;
+        color: #4CAF50;
+        font-weight: bold;
+    }
+
+    @keyframes zoomIn {
+        from { transform: translate(-50%, -50%) scale(0); }
+        to { transform: translate(-50%, -50%) scale(1); }
+    }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-20px) rotate(10deg); }
+            50% { transform: translateY(0) rotate(-10deg); }
+            75% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        @keyframes celebrate {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.5) rotate(15deg); }
+            100% { transform: scale(1) rotate(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="smiley">🤪</div>
+        <div class="question">活泼的罗珊已过期7天了！</div>
+        <div class="buttons">
+            <button id="yesBtn" onclick="handleYes()">续费</button>
+            <button id="noBtn" onmouseover="moveButton()" onclick="handleNo()">关闭</button>
+        </div>
+    </div>
+
+    <!-- 在container容器后添加提示框HTML -->
+<div class="dialog-box">
+    <img src="/program1/image.png" class="dialog-img" alt="成功图标">
+    <div class="dialog-text">在聊天框中发送以上表情即可续费成功~</div>
+</div>
+
+    <script>
+        // 在script标签顶部添加计数器
+    let closeClickCount = 0;
+        // 处理"可以"按钮点击
+       // 修改handleYes函数
+    function handleYes() {
+        const smiley = document.querySelector('.smiley');
+        const dialog = document.querySelector('.dialog-box');
+    
+    // 触发原有动画
+    smiley.style.animation = 'celebrate 0.8s ease';
+        
+        // 显示提示框
+        dialog.style.display = 'block';
+        
+        // 3秒后自动隐藏提示框
+        setTimeout(() => {
+            dialog.style.display = 'none';
+        }, 3000);
+
+        // 重置动画
+        setTimeout(() => {
+            smiley.style.animation = 'bounce 1.2s infinite';
+        }, 800);
+    }
+
+        // 处理"没门"按钮交互
+        function moveButton() {
+            const noBtn = document.getElementById('noBtn');
+            const container = document.querySelector('.buttons');
+            const maxX = container.offsetWidth - noBtn.offsetWidth;
+            const maxY = container.offsetHeight - noBtn.offsetHeight;
+            
+            const newX = Math.random() * maxX;
+            const newY = Math.random() * maxY;
+            
+            noBtn.style.transform = `translate(${newX}px, ${newY}px)`;
+        }
+
+        // 点击"没门"按钮的响应
+         // 修改handleNo函数
+    function handleNo() {
+        closeClickCount++;
+        
+        // 原有移动逻辑
+        moveButton();
+        
+        // 原有抖动效果
+        const buttons = document.querySelector('.buttons');
+        buttons.style.animation = 'shake 0.5s';
+        setTimeout(() => {
+            buttons.style.animation = '';
+        }, 500);
+
+        // 达到5次隐藏按钮
+        if(closeClickCount >= 5) {
+            document.getElementById('noBtn').style.display = 'none';
+        }
+    }
+    </script>
+</body>
+</html>
